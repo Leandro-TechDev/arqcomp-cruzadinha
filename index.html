@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cruzadinha de Arquitetura Computacional</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body data-theme="limbus">
+
+  <header class="topo">
+    <div class="topo__texto">
+      <h1 id="titulo-tema">Treinamento de Hardware</h1>
+      <p id="subtitulo-tema">Cruzadinha de Tópicos de Arquitetura Computacional</p>
+    </div>
+
+    <div class="seletor-tema" role="group" aria-label="Escolher tema">
+      <button type="button" class="seletor-tema__botao" data-tema="ia">Carreira em IA</button>
+      <button type="button" class="seletor-tema__botao" data-tema="limbus">Limbus Company</button>
+    </div>
+  </header>
+
+  <main class="jogo">
+
+    <section class="tabuleiro-area" aria-label="Tabuleiro da cruzadinha">
+      <!-- A grade será gerada pelo JavaScript em etapa futura -->
+      <div id="tabuleiro" class="tabuleiro">
+        <p class="tabuleiro__aviso">O tabuleiro será montado aqui.</p>
+      </div>
+
+      <div class="controles">
+        <button type="button" id="btn-conferir" class="botao botao--principal">Conferir</button>
+        <button type="button" id="btn-reiniciar" class="botao botao--secundario">Reiniciar</button>
+        <p id="contador" class="contador">0 de 12 palavras</p>
+      </div>
+    </section>
+
+    <aside class="pistas" aria-label="Pistas">
+      <div class="pistas__bloco">
+        <h2>Horizontais</h2>
+        <ol id="pistas-horizontais" class="pistas__lista">
+          <li class="pistas__vazio">As pistas aparecerão aqui.</li>
+        </ol>
+      </div>
+
+      <div class="pistas__bloco">
+        <h2>Verticais</h2>
+        <ol id="pistas-verticais" class="pistas__lista">
+          <li class="pistas__vazio">As pistas aparecerão aqui.</li>
+        </ol>
+      </div>
+    </aside>
+
+  </main>
+
+  <footer class="rodape">
+    <p>Projeto de Tópicos de Arquitetura Computacional · HTML, CSS e JavaScript puros</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
