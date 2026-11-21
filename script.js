@@ -28,6 +28,8 @@ const state = {
   keyStatus: {}     // melhor estado de cada letra: 'absent' | 'present' | 'correct'
 };
 
+const STATUS_RANK = { absent: 1, present: 2, correct: 3 };
+
 let messageTimer = null;
 function shuffle(list) {
   const copy = [...list];
@@ -130,10 +132,116 @@ function removeLetter() {
   tile.classList.remove('filled');
 }
 
+function evaluateGuess(guess, secret) {
+  const result = Array(secret.length).fill('absent');
+  const remaining = {};
+
+  for (let i = 0; i < secret.length; i++) {
+    if (guess[i] === secret[i]) {
+      result[i] = 'correct';
+    } else {
+      remaining[secret[i]] = (remaining[secret[i]] || 0) + 1;
+    }
+  }
+
+  for (let i = 0; i < secret.length; i++) {
+    if (result[i] === 'correct') continue;
+    if (remaining[guess[i]] > 0) {
+      result[i] = 'present';
+      remaining[guess[i]]--;
+    }
+  }
+
+  return result;
+}
+
+function updateKeyboardColors(guess, result) {
+  for (let i = 0; i < guess.length; i++) {
+    const letter  = guess[i];
+    const current = state.keyStatus[letter];
+
+    // Nunca "rebaixa" uma tecla: verde > amarelo > cinza
+    if (!current || STATUS_RANK[result[i]] > STATUS_RANK[current]) {
+      state.keyStatus[letter] = result[i];
+
+      const keyEl = keyboardEl.querySelector(`.key[data-key="${letter}"]`);
+      if (keyEl) {
+        keyEl.classList.remove('correct', 'present', 'absent');
+        keyEl.classList.add(result[i]);
+      }
+    }
+  }
+}
+
+/* ---------- Envio e fim de rodada ---------- */
+
+function submitGuess() {
+  if (state.finished) return;
+
+  if (state.guess.length < state.secret.length) {
+    const rowEl = boardEl.children[state.row];
+    rowEl.classList.remove('shake');
+    void rowEl.offsetWidth; // reinicia a animação caso já esteja aplicada
+    rowEl.classList.add('shake');
+    showMessage(`A palavra tem ${state.secret.length} letras.`, 'error', 2000);
+    return;
+  }
+
+  const result = evaluateGuess(state.guess, state.secret);
+
+  result.forEach((status, col) => {
+    getTile(state.row, col).classList.add(status);
+  });
+  updateKeyboardColors(state.guess, result);
+
+  if (state.guess === state.secret) {
+    endRound(true);
+  } else if (state.row === MAX_ATTEMPTS - 1) {
+    endRound(false);
+  } else {
+    state.row++;
+    state.guess = '';
+  }
+}
+
+function endRound(won) {
+  state.finished = true;
+
+  if (won) {
+    state.found++;
+    updateScore();
+    showMessage('Acertou!', 'success');
+  } else {
+    showMessage(`Fim das tentativas. O termo era ${state.secret}.`, 'error');
+  }
+
+  const isLastTerm = state.position >= state.order.length - 1;
+
+  if (isLastTerm) {
+    showMessage(
+      `Fim da lista! Você descobriu ${state.found} de ${TERMS.length} termos.`,
+      'success'
+    );
+    nextBtn.disabled = true;
+  } else {
+    nextBtn.disabled = false;
+  }
+}
+
+function goToNextTerm() {
+  if (!state.finished) return;
+  if (state.position >= state.order.length - 1) return;
+
+  state.position++;
+  loadRound();
+}
+
 /* ---------- Entrada (teclado físico e virtual) ---------- */
 
 function handleKey(key) {
-  if (key === 'BACKSPACE') {
+  if (key === 'ENTER') {
+    submitGuess();
+  } else if (key === 'BACKSPACE') {
     removeLetter();
   } else if (/^[A-Z]$/.test(key)) {
     addLetter(key);
@@ -143,7 +251,12 @@ function handleKey(key) {
 document.addEventListener('keydown', (event) => {
   if (event.ctrlKey || event.metaKey || event.altKey) return;
 
-  if (event.key === 'Backspace') {
+  if (event.key === 'Enter' && event.target.closest('.btn')) return;
+
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    handleKey('ENTER');
+  } else if (event.key === 'Backspace') {
     handleKey('BACKSPACE');
   } else if (/^[a-zA-Z]$/.test(event.key)) {
     handleKey(event.key.toUpperCase());
@@ -156,6 +269,11 @@ keyboardEl.addEventListener('click', (event) => {
 
   handleKey(keyEl.dataset.key);
   keyEl.blur(); // devolve a digitação ao teclado físico
+});
+
+nextBtn.addEventListener('click', () => {
+  goToNextTerm();
+  nextBtn.blur(); // devolve a digitação ao teclado físico
 });
 
 restartBtn.addEventListener('click', () => {
