@@ -2,61 +2,91 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cruzadinha de Arquitetura Computacional</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Termo de Arquitetura</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body data-theme="limbus">
+<body>
+  <main class="game">
 
-  <header class="topo">
-    <div class="topo__texto">
-      <h1 id="titulo-tema">Treinamento de Hardware</h1>
-      <p id="subtitulo-tema">Cruzadinha de Tópicos de Arquitetura Computacional</p>
-    </div>
+    <header class="topbar">
+      <h1 class="title">Termo de Arquitetura</h1>
+      <p class="score" id="score" aria-live="polite">
+        <span id="score-found">0</span> de <span id="score-total">16</span> termos descobertos
+      </p>
+    </header>
 
-    <div class="seletor-tema" role="group" aria-label="Escolher tema">
-      <button type="button" class="seletor-tema__botao" data-tema="ia">Carreira em IA</button>
-      <button type="button" class="seletor-tema__botao" data-tema="limbus">Limbus Company</button>
-    </div>
-  </header>
+    <section class="clue" aria-labelledby="clue-label">
+      <h2 class="clue__label" id="clue-label">Pista</h2>
+      <p class="clue__text" id="clue-text">A pista da rodada aparece aqui.</p>
+      <p class="clue__meta" id="clue-meta">Termo com <span id="word-length">3</span> letras</p>
+    </section>
 
-  <main class="jogo">
-
-    <section class="tabuleiro-area" aria-label="Tabuleiro da cruzadinha">
-      <!-- A grade será gerada pelo JavaScript em etapa futura -->
-      <div id="tabuleiro" class="tabuleiro">
-        <p class="tabuleiro__aviso">O tabuleiro será montado aqui.</p>
-      </div>
-
-      <div class="controles">
-        <button type="button" id="btn-conferir" class="botao botao--principal">Conferir</button>
-        <button type="button" id="btn-reiniciar" class="botao botao--secundario">Reiniciar</button>
-        <p id="contador" class="contador">0 de 12 palavras</p>
+    <p class="message" id="message" role="status" aria-live="polite"></p>
+    <section class="board-wrap" aria-label="Tabuleiro de tentativas">
+      <div class="board" id="board" style="--cols: 3;">
+        <div class="row">
+          <div class="tile correct">C</div>
+          <div class="tile absent">U</div>
+          <div class="tile present">P</div>
+        </div>
+        <div class="row">
+          <div class="tile filled">C</div>
+          <div class="tile filled">P</div>
+          <div class="tile"></div>
+        </div>
+        <div class="row"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+        <div class="row"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+        <div class="row"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+        <div class="row"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
       </div>
     </section>
 
-    <aside class="pistas" aria-label="Pistas">
-      <div class="pistas__bloco">
-        <h2>Horizontais</h2>
-        <ol id="pistas-horizontais" class="pistas__lista">
-          <li class="pistas__vazio">As pistas aparecerão aqui.</li>
-        </ol>
-      </div>
+    <div class="actions">
+      <button type="button" class="btn btn--primary" id="btn-next">Próxima palavra</button>
+      <button type="button" class="btn" id="btn-restart">Reiniciar jogo</button>
+    </div>
 
-      <div class="pistas__bloco">
-        <h2>Verticais</h2>
-        <ol id="pistas-verticais" class="pistas__lista">
-          <li class="pistas__vazio">As pistas aparecerão aqui.</li>
-        </ol>
+    <section class="keyboard" id="keyboard" aria-label="Teclado virtual">
+      <div class="keyboard__row">
+        <button type="button" class="key" data-key="Q">Q</button>
+        <button type="button" class="key" data-key="W">W</button>
+        <button type="button" class="key" data-key="E">E</button>
+        <button type="button" class="key" data-key="R">R</button>
+        <button type="button" class="key" data-key="T">T</button>
+        <button type="button" class="key" data-key="Y">Y</button>
+        <button type="button" class="key" data-key="U">U</button>
+        <button type="button" class="key" data-key="I">I</button>
+        <button type="button" class="key" data-key="O">O</button>
+        <button type="button" class="key" data-key="P">P</button>
       </div>
-    </aside>
+      <div class="keyboard__row">
+        <button type="button" class="key" data-key="A">A</button>
+        <button type="button" class="key" data-key="S">S</button>
+        <button type="button" class="key" data-key="D">D</button>
+        <button type="button" class="key" data-key="F">F</button>
+        <button type="button" class="key" data-key="G">G</button>
+        <button type="button" class="key" data-key="H">H</button>
+        <button type="button" class="key" data-key="J">J</button>
+        <button type="button" class="key" data-key="K">K</button>
+        <button type="button" class="key" data-key="L">L</button>
+      </div>
+      <div class="keyboard__row">
+        <button type="button" class="key key--wide" data-key="ENTER">Enter</button>
+        <button type="button" class="key" data-key="Z">Z</button>
+        <button type="button" class="key" data-key="X">X</button>
+        <button type="button" class="key" data-key="C">C</button>
+        <button type="button" class="key" data-key="V">V</button>
+        <button type="button" class="key" data-key="B">B</button>
+        <button type="button" class="key" data-key="N">N</button>
+        <button type="button" class="key" data-key="M">M</button>
+        <button type="button" class="key key--wide" data-key="BACKSPACE" aria-label="Apagar">⌫</button>
+      </div>
+    </section>
 
   </main>
-
-  <footer class="rodape">
-    <p>Projeto de Tópicos de Arquitetura Computacional · HTML, CSS e JavaScript puros</p>
-  </footer>
-
-  <script src="script.js"></script>
 </body>
 </html>
