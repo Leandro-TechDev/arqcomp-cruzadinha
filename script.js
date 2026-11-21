@@ -1,10 +1,22 @@
 'use strict';
 const MAX_ATTEMPTS = 6;
-// Temporário
 const TERMS = [
-  { word: 'CPU',      clue: 'Pista de teste: unidade que executa as instruções.' },
-  { word: 'ULA',      clue: 'Pista de teste: faz as operações aritméticas e lógicas.' },
-  { word: 'DUALCORE', clue: 'Pista de teste: processador com dois núcleos.' }
+  { word: 'CPU',              clue: 'Funcionário que nunca tira férias, só faz o que ta no manual' },
+  { word: 'ULA',              clue: 'Calculadora de bolso do cérebro' },
+  { word: 'UC',               clue: 'O maestro: não toca nenhum instrumento, mas conhece todos' },
+  { word: 'REGISTRADORES',    clue: 'Os post-its do processador: pouquíssimos, mas colados bem em cima da mesa' },
+  { word: 'RAM',              clue: 'Memória de peixe com mesa grande.' },
+  { word: 'ROM',              clue: 'Os dez mandamentos: dá para ler quantas vezes quiser, mas ninguém reescreve' },
+  { word: 'EEPROM',           clue: 'Caderno com borracha elétrica: apaga e reescreve sem precisar de luz para lembrar' },
+  { word: 'FLASH',            clue: 'O tal do relâmpago vermelho, não esquece nada, nem no escuro, e cabe no seu pendrive' },
+  { word: 'CACHE',            clue: 'Troco no bolso: pouco, mas você alcança na hora, sem pro banco' },
+  { word: 'MEMORIADEMASSA',   clue: 'O armário do fundo de casa, cabe muita coisa, demora para buscar, e o que está lá fica' },
+  { word: 'DMA',              clue: 'O entregador que leva a encomenda direto para a prateleira, sem incomodar o chefe' },
+  { word: 'ADDRESSBUS',       clue: 'O endereço no envelope: diz para onde vai, mas nunca o que tem dentro' },
+  { word: 'DATABUS',          clue: 'O caminhão de mudança: leva o conteúdo das caixas de um lugar para outro' },
+  { word: 'MICROCONTROLADOR', clue: 'Um computador do tamanho de uma moeda especializado' },
+  { word: 'DUALCORE',         clue: 'Os dois amigos que sempre fazem o trabalho junto' },
+  { word: 'QUADCORE',         clue: 'O trabalho em grupo de verdade: quatro pessoas e todas trabalham' }
 ];
 
 const boardEl      = document.getElementById('board');
