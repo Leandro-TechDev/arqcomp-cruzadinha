@@ -204,7 +204,30 @@ button {
 .tile.present { background: var(--present); color: var(--ink); }
 .tile.absent  { background: var(--absent); }
  
+/* Animação só em resposta à ação do jogador */
+.tile.pop {
+  animation: pop 0.12s ease-out;
+}
+ 
+.row.shake {
+  animation: shake 0.35s ease-in-out;
+}
+ 
+@keyframes pop {
+  50% { transform: scale(1.08); }
+}
+ 
+@keyframes shake {
+  20%, 60% { transform: translateX(-6px); }
+  40%, 80% { transform: translateX(6px); }
+}
 
+@media (prefers-reduced-motion: reduce) {
+  .tile.pop,
+  .row.shake {
+    animation: none;
+  }
+}
  
 /* ---------- Botões de ação ---------- */
  
